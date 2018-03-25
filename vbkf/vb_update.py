@@ -1,8 +1,11 @@
 import numpy as np
 from scipy import stats
+import logging
 from collections import defaultdict
 
 from vbkf.utils import logme
+
+logger = logging.getLogger(__name__)
 
 np.random.seed(10)
 
@@ -27,8 +30,6 @@ def get_A_i_k(P_i_k__k, x_i_k__k, x_k__l):
 
     This is zero for the first iteration...
     """
-    # P_i_k__k = self.P_k__k_is[-1]
-    # x_i_k__k = self.x_k__k_is[-1]
     x_gain = (x_i_k__k - x_k__l)
     return P_i_k__k * (x_gain @ x_gain.T)
 
@@ -122,7 +123,7 @@ def perform_update(x_k__l, P_k__l, tau, n, rho, u_l__l, m, U_l__l, z_k, H_k, N=I
     for i in range(N):
         x, P, t, T, u, U = single_step(P, x, x_k__l, t, T, z_k, H_k, u, U, m, n)
         log = logme(log, x, P, t, T)
-        print(i)
+        logger.debug('[VB step %s]', i)
     return x, P, t, T, u, U
 
 
