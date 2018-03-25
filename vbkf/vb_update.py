@@ -177,7 +177,7 @@ def variational_measurement_update(x_k__l, P_k__l, tau, n, rho, u_l__l, m, U_l__
     """
     x, P, t, T, u, U = perform_update(x_k__l, P_k__l, tau, n, rho, u_l__l, m, U_l__l, z_k, H_k, N)
     x_k, P_k__l, R_k = sample(x, P, t, T, u, U)
-    return x_k, P_k__l, t, T, u, U
+    return x_k, P_k__l, u, U
 
 
 def time_update(x_l__l, P_l__l, u_l__l, U_l__l, F_l, H_k, z_k, Q_l, m, n, tau, rho, N):
@@ -187,8 +187,8 @@ def time_update(x_l__l, P_l__l, u_l__l, U_l__l, F_l, H_k, z_k, Q_l, m, n, tau, r
     logger.debug('X_init %s', x_l__l)
     x_k__l, P_k__l = prediction_step(F_l, x_l__l, P_l__l, Q_l)
     logger.debug('X_predicted %s', x_k__l)
-    x_k, P_k__l, t, T, u, U = variational_measurement_update(
+    x_k, P_k__l, u, U = variational_measurement_update(
         x_k__l, P_k__l, tau, n, rho, u_l__l, m, U_l__l, z_k, H_k, N
     )
     logger.debug('X_updated %s', x_k)
-    return x_k, P_k__l, t, T, u, U
+    return x_k, P_k__l, u, U
