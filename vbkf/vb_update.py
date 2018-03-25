@@ -35,7 +35,7 @@ def predict_PECM(F_l, P_l__l, Q_l):
     return F_l @ P_l__l @ F_l.T + Q_l
 
 
-def prediction_step(F_l, x_l__l, P_l__l, Q_l):
+def time_update(F_l, x_l__l, P_l__l, Q_l):
     x_k__l = predict_state(F_l, x_l__l)
     P_k__l = predict_PECM(F_l, P_l__l, Q_l)
     return x_k__l, P_k__l
@@ -180,12 +180,12 @@ def variational_measurement_update(x_k__l, P_k__l, tau, n, rho, u_l__l, m, U_l__
     return x_k, P_k__l, u, U
 
 
-def time_update(x_l__l, P_l__l, u_l__l, U_l__l, F_l, H_k, z_k, Q_l, m, n, tau, rho, N):
+def update(x_l__l, P_l__l, u_l__l, U_l__l, F_l, H_k, z_k, Q_l, m, n, tau, rho, N):
     """
     Functionality of Algorithm 1 AND sampling (eq. 46-48).
     """
     logger.debug('X_init %s', x_l__l)
-    x_k__l, P_k__l = prediction_step(F_l, x_l__l, P_l__l, Q_l)
+    x_k__l, P_k__l = time_update(F_l, x_l__l, P_l__l, Q_l)
     logger.debug('X_predicted %s', x_k__l)
     x_k, P_k__l, u, U = variational_measurement_update(
         x_k__l, P_k__l, tau, n, rho, u_l__l, m, U_l__l, z_k, H_k, N

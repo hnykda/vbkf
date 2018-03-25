@@ -1,5 +1,5 @@
 import numpy as np
-from vbkf.vb_update import sample, time_update
+from vbkf.vb_update import sample, update
 
 
 def get_Q_k(k, T, q, d_t):
@@ -78,7 +78,7 @@ def test_integration_vb():
         x_k = state + np.random.rand(4) * 0.1
         z_k = state + np.random.rand(4) * 0.5
 
-        x_k, P, u, U = time_update(
+        x_k, P, u, U = update(
             x_k, P, u, U, F_l,
             H_k, z_k, Q_l,
             m, n, tau, rho, N
